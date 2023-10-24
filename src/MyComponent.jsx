@@ -5,11 +5,6 @@ import { GET_DATA } from './queries';
 const MyComponent = () => {
     const { loading, error, data } = useQuery(GET_DATA);
     const client = useApolloClient();
-    let GET_COUNTRIES = gql`{
-    countries{
-      name
-      }
-  }`
     const deleteCountry = (countryName) => {
         const existingData = client.readQuery({
             query: GET_DATA,
@@ -24,7 +19,7 @@ const MyComponent = () => {
             query: GET_DATA,
             data: updatedData,
         });
-        console.log("updatedData", updatedData);
+        // console.log("updatedData", updatedData);
     };
 
     // *************** update function ***********************
@@ -42,7 +37,7 @@ const MyComponent = () => {
                 return country;
             }),
         };
-        console.log("updateddata", updatedData);
+        // console.log("updateddata", updatedData);
         // Write the updated data back to the cache
         client.writeQuery({
             query: GET_DATA,
