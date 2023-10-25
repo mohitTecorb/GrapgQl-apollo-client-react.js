@@ -8,7 +8,8 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const client = new ApolloClient({
-  uri: 'https://countries.trevorblades.com/',
+  // uri: 'https://countries.trevorblades.com/', 
+  uri: 'https://spacex-production.up.railway.app/',
   cache: new InMemoryCache(),
 });
 

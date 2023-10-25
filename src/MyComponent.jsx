@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
-import { useQuery, useApolloClient, gql } from '@apollo/client';
+import React from 'react';
+import { useQuery, useApolloClient } from '@apollo/client';
 import { GET_DATA } from './queries';
 
 const MyComponent = () => {
-    const { loading, error, data } = useQuery(GET_DATA);
+
+    const { loading, error, data, } = useQuery(GET_DATA);
     const client = useApolloClient();
     const deleteCountry = (countryName) => {
         const existingData = client.readQuery({
@@ -74,7 +75,6 @@ const MyComponent = () => {
                     ))}
                 </tbody>
             </table>
-
         </div>
     );
 };

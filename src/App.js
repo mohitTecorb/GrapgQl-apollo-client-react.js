@@ -1,11 +1,12 @@
 import './App.css';
 import MyComponent from './MyComponent';
-import { Link } from "react-router-dom"
+import SpaceComponent from './SpaceComponentPagination';
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <MyComponent />
+        {/* <MyComponent /> */}
+        <SpaceComponent />
       </header>
     </div>
   );
