@@ -3,10 +3,11 @@ import { useQuery } from '@apollo/client';
 import { GET_SPACEX_DATA } from './queries';
 
 const SpaceComponent = () => {
-    const [pageSize, setPageSize] = useState(2)
-    const [page, setPage] = useState(0)
+    // const [pageSize, setPageSize] = useState(10)
+    let PAGE_SIZE = 10;
+    const [page, setPage] = useState(1)
     const { loading, error, data, fetchMore } = useQuery(GET_SPACEX_DATA, {
-        variables: { limit: pageSize, offset: page * pageSize },
+        variables: { limit: page + PAGE_SIZE, offset: page },
     });
 
     // const loadMoreData = () => {
@@ -27,14 +28,14 @@ const SpaceComponent = () => {
 
     const handlePage = (type) => {
         if (type == "prev") {
-            setPage(prev => prev - 1)
+            setPage(prev => prev - 10)
         } else {
-            setPage(prev => prev + 1)
+            setPage(prev => prev + 10)
         }
     }
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
-    console.log("data", page);
+    console.log("data", data);
 
     return (
         <div>
