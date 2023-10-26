@@ -6,6 +6,7 @@ const SpaceComponent = () => {
     // const [pageSize, setPageSize] = useState(10)
     let PAGE_SIZE = 10;
     const [page, setPage] = useState(1)
+    const [pageNo, setPageNo] = useState(0)
     const { loading, error, data, fetchMore } = useQuery(GET_SPACEX_DATA, {
         variables: { limit: page + PAGE_SIZE, offset: page },
     });
@@ -29,8 +30,10 @@ const SpaceComponent = () => {
     const handlePage = (type) => {
         if (type == "prev") {
             setPage(prev => prev - 10)
+            setPageNo(prev => prev - 1)
         } else {
             setPage(prev => prev + 10)
+            setPageNo(prev => prev + 1)
         }
     }
     if (loading) return <p>Loading...</p>;
@@ -43,8 +46,8 @@ const SpaceComponent = () => {
                 return <h4 key={index}>{item?.mission_name}</h4>
             })}
 
-            <button disabled={!page} style={{ padding: "10px", marginLeft: "10px" }} onClick={() => { handlePage("prev") }}>Prev</button>
-            <span style={{ marginLeft: "10px" }}>{page + 1}</span>
+            <button disabled={!pageNo} style={{ padding: "10px", marginLeft: "10px" }} onClick={() => { handlePage("prev") }}>Prev</button>
+            <span style={{ marginLeft: "10px" }}>{pageNo + 1}</span>
             <button style={{ padding: "10px", marginLeft: "10px" }} onClick={() => { handlePage("next") }}>Next</button>
             {/* <button style={{padding:"5px"}} onClick={handlePageSize}>Load More Data</button> */}
 
