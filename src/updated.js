@@ -1,18 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery, useApolloClient } from '@apollo/client';
 import { GET_DATA } from './queries';
 
 const MyComponent = () => {
+    const [dataFromLocalStorage, setDataFromLocalStorage] = useState(null);
 
-    const { loading, error, data, } = useQuery(GET_DATA);
+    const { loading, error, data, } = useQuery(GET_DATA, {
+        fetchPolicy: 'cache-only', // This fetch policy ensures data is first attempted to be retrieved from the cache
+    });
+
+
+    useEffect(() => {
+        const countriesData = localStorage.getItem('countries');
+        if (countriesData) {
+            setDataFromLocalStorage(JSON.parse(countriesData));
+        }
+    }, []);
+
     const client = useApolloClient();
     const deleteCountry = (countryName) => {
-        const existingData = client.readQuery({
-            query: GET_DATA,
-        });
+        let existingData = ""
+
+        if (dataFromLocalStorage) {
+            existingData = JSON.parse(localStorage.countries)
+        } else {
+            let newData = client.readQuery({
+                query: GET_DATA,
+            });
+            existingData = newData.countries
+        }
 
         const updatedData = {
-            countries: existingData.countries.filter(country => country.name !== countryName),
+            countries: existingData.filter(country => country.name !== countryName),
         };
 
         // Write the updated data back to the cache
@@ -20,6 +39,8 @@ const MyComponent = () => {
             query: GET_DATA,
             data: updatedData,
         });
+        localStorage.setItem('countries', JSON.stringify(updatedData.countries));
+        setDataFromLocalStorage(updatedData.countries)
         // console.log("updatedData", updatedData);
     };
 
@@ -44,12 +65,21 @@ const MyComponent = () => {
             query: GET_DATA,
             data: updatedData,
         });
+        localStorage.setItem('countries', JSON.stringify(updatedData.countries));
+
     };
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
     // console.log("data", data);
-
+    const handleData = () => {
+        if (dataFromLocalStorage) {
+            return dataFromLocalStorage
+        } else {
+            return data.countries
+        }
+    }
+    console.log(">>>>>>>>", handleData());
     return (
         <div>
             <table>
@@ -62,7 +92,7 @@ const MyComponent = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data?.countries?.length > 0 && data.countries.map((country, index) => (
+                    {handleData()?.length > 0 && handleData()?.map((country, index) => (
                         <tr key={index}>
                             <td>{country?.name}</td>
                             <td>{country?.currency}</td>

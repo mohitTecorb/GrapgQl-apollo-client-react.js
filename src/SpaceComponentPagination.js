@@ -3,7 +3,6 @@ import { useQuery } from '@apollo/client';
 import { GET_SPACEX_DATA } from './queries';
 
 const SpaceComponent = () => {
-    // const [pageSize, setPageSize] = useState(10)
     let PAGE_SIZE = 10;
     const [page, setPage] = useState(1)
     const [pageNo, setPageNo] = useState(0)
